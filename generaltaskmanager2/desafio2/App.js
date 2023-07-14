@@ -1,35 +1,39 @@
-import MainScreen from './src/Screens/MainScreen';
-
-const taskList = [
-  {
-    id: 1,
-    task: "Regar plantas",
-    completed: false
-  },
-  {
-    id: 2,
-    task: "Lavar platos",
-    completed: false
-  },
-  {
-    id: 3,
-    task: "Limpiar el baño",
-    completed: false
-  },
-  {
-    id: 4,
-    task: "Ir a comprar carne",
-    completed: false
-  },
-  {
-    id: 5,
-    task: "Comprar carbón",
-    completed: false
-  },
-]
+import { StyleSheet, View } from 'react-native';
+import Header from './src/Components/Header';
+import Home from './src/Screens/Home';
+import { useState } from 'react';
+import { useFonts } from 'expo-font';
+import ItemListCategory from './src/Screens/ItemListCategory';
 
 export default function App() {
+
+  const [categorySelected, setCategorySelected] = useState("")
+
+  const [fontsLoaded] = useFonts({
+    Josefin: require('./src/assets/Fonts/Josefin_Sans/JosefinSans-Regular.ttf'),
+    Lobster: require('./src/assets/Fonts/Lobster/Lobster-Regular.ttf'),
+    PlayFair: require('./src/assets/Fonts/PlayFair/Playfair_144pt-Regular.ttf'),
+  })
+
+  if (!fontsLoaded) {
+    return null
+  }
+
   return (
-    <MainScreen taskList={taskList} />
+    <View style={styles.container}>
+      <Header />
+      {
+        categorySelected ?
+          <ItemListCategory category={categorySelected} setCategory={setCategorySelected} />
+          :
+          <Home setCategorySelected={setCategorySelected} />
+      }
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
